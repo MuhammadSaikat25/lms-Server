@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        width: 80%;
+        margin: 0 auto;
+        background: rebeccapurple;
+        padding: 12px;
+      }
+      .header {
+        text-align: center;
+        padding: 20px 0;
+      }
+      .content {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 5px;
+      }
+      .order-details {
+        margin: 20px 0;
+      }
+      .order-details th,
+      .order-details td {
+        padding: 10px;
+        text-align: left;
+      }
+      .footer {
+        text-align: center;
+        padding: 10px 0;
+        margin-top: 20px;
+        border-top: 1px solid #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Order Confirmation</h1>
+      </div>
+      <div class="content">
+        <p>Dear Customer,</p>
+        <p>Thank you for your order. Below are the details of your purchase:</p>
+        <table class="order-details" border="1">
+          <tr>
+            <th>Order ID</th>
+            <h1><%= order._id %></h1>
+          </tr>
+          <tr>
+            <th>Course Name</th>
+            <td><%= order.name %></td>
+          </tr>
+          <tr>
+            <th>Price</th>
+            <td><%= order.price %></td>
+          </tr>
+          <tr>
+            <th>Order Date</th>
+            <td><%= order.date %></td>
+          </tr>
+        </table>
+        <p>
+          If you have any questions or concerns, please do not hesitate to
+          contact us.
+        </p>
+        <p>Thank you for shopping with us!</p>
+      </div>
+      <div class="footer">
+        <p>&copy; 2024 Your Coding Hero. All rights reserved.</p>
+      </div>
+    </div>
+  </body>
+</html>

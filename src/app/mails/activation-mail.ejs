@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Your MERN App Email Template</title>
+    <style>
+      /* Basic styles for the email body */
+      body {
+        font-family: sans-serif;
+        margin: 0;
+        padding: 0;
+        color: #555;
+      }
+
+      /* Container for main content */
+      .container {
+        padding: 20px;
+        max-width: 600px;
+        width: 100%;
+        margin: 0 auto;
+        background-color: #f9f9f9;
+      }
+
+      /* Header with logo or app name */
+      .header {
+        padding: 20px 0;
+        border-bottom: 1px solid #ddd;
+      }
+
+      /* Main content area */
+      .content {
+        padding: 20px 0;
+      }
+
+      /* Links */
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      /* Footer with any additional information */
+      .footer {
+        padding: 20px 0;
+        text-align: center;
+        color: #aaa;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1>Welcome <%= user.name %></h1>
+        <h1>welcome To Programming Hero</h1>
+      </header>
+      <div class="content">
+        <h1><%= activationCode %></h1>
+      </div>
+      <footer class="footer">
+        <p>Copyright &copy; 2024 Your Company Name</p>
+      </footer>
+    </div>
+  </body>
+</html>
