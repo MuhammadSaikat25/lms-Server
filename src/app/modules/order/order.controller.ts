@@ -9,10 +9,12 @@ const stripe = require("stripe")(process.env.Secret_key);
 const createOrder = catchAsyncError(
   async (req: Request & { user: any }, res: Response, next: NextFunction) => {
     const { courseId, paymentInfo } = req.body;
+
     const user = req.user._id;
     if (paymentInfo) {
       if ("id" in paymentInfo) {
         const paymentIntentId = paymentInfo.id;
+
         const paymentIntent = await stripe.paymentIntents.retrieve(
           paymentIntentId
         );
@@ -79,7 +81,6 @@ const payment = catchAsyncError(
           enabled: true,
         },
       });
-
       res.status(201).json({
         success: true,
         client_secret: myPayment.client_secret,

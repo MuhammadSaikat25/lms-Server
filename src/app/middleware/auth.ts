@@ -13,17 +13,16 @@ export const auth = (...UserRole: string[]) => {
       res: Response,
       next: NextFunction
     ) => {
-      const token = req.cookies.token;
-     
+      const token = req.headers.authorization;
+
       if (!token) {
-       
         return next(new ErrorHandler("You have no access to this route", 400));
       }
       const decoded = jwt.verify(
         token as string,
         process.env.ACCESS_TOKEN as string
       ) as JwtPayload;
-     
+
       const userExist = await UserModel.findById(decoded._id);
 
       if (!userExist) {
@@ -37,7 +36,7 @@ export const auth = (...UserRole: string[]) => {
           message: "You have no access to this route",
         });
       }
-      
+
       req.user = userExist;
       next();
     }
