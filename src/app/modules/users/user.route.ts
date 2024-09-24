@@ -16,7 +16,7 @@ router.put(
   auth("user", "admin"),
   userController.updatePassword
 );
-router.get("/get-allUsers", auth("admin"), userController.getAllUserByAdmin);
+router.get("/get-allUsers", auth("admin","user"), userController.getAllUserByAdmin);
 router.get("/get-allCourse", auth("admin"), userController.getAllCourseByAdmin);
 
 router.put(

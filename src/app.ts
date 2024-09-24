@@ -8,22 +8,22 @@ import { notificationRouter } from "./app/modules/notification/notification.rout
 import { ErrorMiddleware } from "./app/middleware/error";
 import { orderRouter } from "./app/modules/order/order.route";
 import { analyticsRouter } from "./app/modules/analytics/analytics.router";
+import { reviewRouter } from "./app/modules/review/review.route";
 
 export const app = express();
 require("dotenv").config();
 
-app.use(express.json({ limit: '25mb' }))
+app.use(express.json({ limit: "25mb" }));
 app.use(cookieParser());
 
 app.use(
   cors({
-    origin: 'https://lmsclinet.vercel.app',
+    origin: "https://lmsclinet.vercel.app",
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Other-Custom-Header']
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization", "Other-Custom-Header"],
   })
 );
-
 
 app.use(
   "/api/v1",
@@ -32,7 +32,8 @@ app.use(
   courseRouter,
   notificationRouter,
   orderRouter,
-  analyticsRouter
+  analyticsRouter,
+  reviewRouter
 );
 
 app.get("/", (req, res) => {

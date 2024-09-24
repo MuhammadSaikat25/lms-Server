@@ -8,7 +8,7 @@ route.post("/getVideoOPT", courseController.generateVideoUrl);
 route.put("/update-course/:id", auth("admin"), courseController.updateCourse);
 route.get("/course/:id", courseController.getSingleCourse);
 route.get("/course", courseController.getAllCourse);
-route.get("/user-course/:id", auth("user"), courseController.getCourseByUser);
+route.get("/user-course/:id", auth("user",'admin'), courseController.getCourseByUser);
 route.delete(
   "/delete-course/:id",
   auth("admin"),

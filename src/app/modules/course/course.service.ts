@@ -23,7 +23,6 @@ const getSingleCourse = async (id: string) => {
   return result;
 };
 const getCourseByUser = async (courseId: string, userCourse: any) => {
-  console.log(userCourse);
   const courseExist = userCourse.filter(
     (course: any) => course.courseId === courseId
   );
@@ -38,7 +37,6 @@ const deleteCourseByAdmin = async (id: string) => {
   if (!courseExist) {
     throw new ErrorHandler("Course does not found", 400);
   }
-
   const result = CourseModel.findByIdAndDelete(id);
   return result;
 };

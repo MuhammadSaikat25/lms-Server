@@ -5,6 +5,7 @@ import { courseService } from "./course.service";
 import { CourseModel } from "./course.model";
 import { ErrorHandler } from "../../utils/ErrorHandler";
 import axios from "axios";
+import { reviewModel } from "../review/review.model";
 
 const createCourse = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -52,22 +53,52 @@ const getSingleCourse = catchAsyncError(
     }
   }
 );
+
 const getAllCourse = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const result = await CourseModel.find();
-      // select(
-      //   "-courseData.videoUrl -courseData.suggestion -courseData.question -courseData.links "
-      // );
-      res.status(200).send({
+      const courses = await CourseModel.find().lean();
+
+      const ratings = await reviewModel.aggregate([
+        {
+          $group: {
+            _id: "$course",
+            averageRating: { $avg: "$rating" },
+            reviewCount: { $sum: 1 },
+          },
+        },
+      ]);
+
+      const ratingsMap = ratings.reduce((acc, rating) => {
+        acc[rating._id.toString()] = {
+          averageRating: rating.averageRating.toFixed(1),
+          reviewCount: rating.reviewCount,
+        };
+        return acc;
+      }, {} as Record<string, { averageRating: string; reviewCount: number }>);
+
+      const coursesWithRatings = courses.map((course) => {
+        const rating = ratingsMap[course._id.toString()] || {
+          averageRating: 0,
+          reviewCount: 0,
+        };
+        return {
+          ...course,
+          averageRating: rating.averageRating,
+          reviewCount: rating.reviewCount,
+        };
+      });
+
+      res.status(200).json({
         success: true,
-        data: result,
+        data: coursesWithRatings,
       });
     } catch (error: any) {
       next(new ErrorHandler(error.message, 400));
     }
   }
 );
+
 const getCourseByUser = catchAsyncError(
   async (req: Request & { user: any }, res: Response, next: NextFunction) => {
     const userCourseList = req?.user.courses;

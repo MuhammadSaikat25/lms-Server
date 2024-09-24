@@ -8,7 +8,7 @@ router.post("/create-layout", auth("admin"), layoutController.createLayout);
 router.put("/edit-layout", auth("admin"), layoutController.editLayout);
 router.get(
   "/get-layout/:type",
-  auth("admin"),
+  auth("admin",'user'),
   layoutController.getLayoutByType
 );
 
