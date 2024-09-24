@@ -29,6 +29,7 @@ const loginUser = async (playLoad: { email: string; password: string }) => {
     email: userExist.email,
     role: userExist.role,
     name: userExist.name,
+    avatar:userExist?.avatar
   };
   const token = jwt.sign(jwtPlayLoad, process.env.ACCESS_TOKEN as string, {
     expiresIn: "7d",
