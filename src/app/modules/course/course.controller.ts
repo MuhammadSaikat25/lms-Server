@@ -58,7 +58,6 @@ const getAllCourse = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const courses = await CourseModel.find().lean();
-
       const ratings = await reviewModel.aggregate([
         {
           $group: {

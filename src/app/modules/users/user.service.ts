@@ -90,6 +90,7 @@ const updatePassword = async (
   );
   return result;
 };
+
 const updateUserRoleByAdmin = async (email: string, role: string) => {
   const user = await UserModel.findOne({ email });
   if (!user) {
@@ -103,6 +104,7 @@ const updateUserRoleByAdmin = async (email: string, role: string) => {
 
   return result;
 };
+
 const deleteUser = async (id: string) => {
   const isUSerExits = UserModel.findById(id);
   if (!isUSerExits) {

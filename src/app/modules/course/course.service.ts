@@ -16,12 +16,14 @@ const updateCourse = async (PlayLoad: Partial<TCourse>, courseId: string) => {
   );
   return result;
 };
+
 const getSingleCourse = async (id: string) => {
   const result = await CourseModel.findById(id).select(
     "-courseData.videoUrl -courseData.suggestion -courseData.question -courseData.links "
   );
   return result;
 };
+
 const getCourseByUser = async (courseId: string, userCourse: any) => {
   const courseExist = userCourse.filter(
     (course: any) => course.courseId === courseId
@@ -32,6 +34,7 @@ const getCourseByUser = async (courseId: string, userCourse: any) => {
   const course = await CourseModel.findById(courseExist);
   return course?.courseContent;
 };
+
 const deleteCourseByAdmin = async (id: string) => {
   const courseExist = await CourseModel.findById(id);
   if (!courseExist) {
