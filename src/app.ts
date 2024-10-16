@@ -9,6 +9,7 @@ import { ErrorMiddleware } from "./app/middleware/error";
 import { orderRouter } from "./app/modules/order/order.route";
 import { analyticsRouter } from "./app/modules/analytics/analytics.router";
 import { reviewRouter } from "./app/modules/review/review.route";
+import { purchaseCourse } from "./app/modules/purchase-course/purchaseCourder.route";
 
 export const app = express();
 require("dotenv").config();
@@ -33,11 +34,12 @@ app.use(
   notificationRouter,
   orderRouter,
   analyticsRouter,
-  reviewRouter
+  reviewRouter,
+  purchaseCourse
 );
 
 app.get("/", (req, res) => {
-  res.send("All OK");
+  res.send("All ok for LMS");
 });
 
 app.all("*", (req: Request, res: Response, next: NextFunction) => {

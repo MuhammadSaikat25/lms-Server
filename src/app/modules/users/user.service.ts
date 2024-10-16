@@ -3,10 +3,15 @@ import { TUser } from "./user.interface";
 import UserModel from "./user.model";
 import jwt from "jsonwebtoken";
 import { ErrorHandler } from "../../utils/ErrorHandler";
+import { purchaseCourseModel } from "../purchase-course/purchaseCourder.model";
 require("dotenv").config();
 
 const registrationUser = async (playLoad: TUser) => {
   const result = await UserModel.create(playLoad);
+  await purchaseCourseModel.create({
+    userId: playLoad.email,
+    courses: [],
+  });
   return result;
 };
 const loginUser = async (playLoad: { email: string; password: string }) => {
@@ -29,12 +34,17 @@ const loginUser = async (playLoad: { email: string; password: string }) => {
     email: userExist.email,
     role: userExist.role,
     name: userExist.name,
-    avatar:userExist?.avatar
+    avatar: userExist?.avatar,
   };
   const token = jwt.sign(jwtPlayLoad, process.env.ACCESS_TOKEN as string, {
     expiresIn: "7d",
   });
-
+  const data = {
+    userId: userExist._id,
+    courses: [],
+  };
+  // ! when user login for first time then it create empty data
+  await purchaseCourseModel.create(data);
   return token;
 };
 
@@ -53,7 +63,7 @@ const updateUser = async (playLoad: Partial<TUser> | any, email: string) => {
     if (!comparePassword) {
       return;
     }
-    console.log(comparePassword)
+    console.log(comparePassword);
     const { newPass, _id, password, ...filteredPlayLoad } = playLoad;
     const updateData = await UserModel.findOneAndUpdate(
       { email: playLoad.email },

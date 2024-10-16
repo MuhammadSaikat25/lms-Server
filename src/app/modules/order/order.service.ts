@@ -6,11 +6,14 @@ import path from "path";
 import ejs from "ejs";
 import sendMail from "../../utils/sendEmail";
 import { NotificationModel } from "../notification/notification.model";
+import { purchaseCourseModel } from "../purchase-course/purchaseCourder.model";
+import mongoose from "mongoose";
 
 const createOrder = async <T>(playLoad: any) => {
   const { courseId, paymentInfo, user } = playLoad;
   // ! check user exist or not
   const isUserExits = await UserModel.findById(user);
+
   if (!isUserExits) {
     return;
   }
@@ -30,7 +33,7 @@ const createOrder = async <T>(playLoad: any) => {
   const data: any = {
     userId: user?._id,
     courseId: isCourseExit!._id,
-    paymentInfo
+    paymentInfo,
   };
   const result = await orderModel.create(data);
   const mailData = {
@@ -45,24 +48,32 @@ const createOrder = async <T>(playLoad: any) => {
       }),
     },
   };
-  const html = await ejs.renderFile(
-    path.join(__dirname, "../../mails/order-email.ejs"),
-    mailData
-  );
-  try {
-    if (user) {
-      await sendMail({
-        email: isUserExits.email,
-        subject: "Order Confirmation",
-        template: "order-email.ejs",
-        data: mailData,
-      });
-    }
-  } catch (error) {}
+  // const html = await ejs.renderFile(
+  //   path.join(__dirname, "../../mails/order-email.ejs"),
+  //   mailData
+  // );
+  // try {
+  //   if (user) {
+  //     await sendMail({
+  //       email: isUserExits.email,
+  //       subject: "Order Confirmation",
+  //       template: "order-email.ejs",
+  //       data: mailData,
+  //     });
+  //   }
+  // } catch (error) {}
+
   const updatedUserData = await UserModel.findByIdAndUpdate(
     isUserExits._id,
-    { $addToSet: { courses: { courseId } } },
+    { $push: { courses: { courseId } } },
     { new: true }
+  );
+  const courseObjectId = new mongoose.Types.ObjectId(courseId);
+
+  const purchaseCourse = await purchaseCourseModel.findOneAndUpdate(
+    { userId: isUserExits.email },
+    { $push: { courses: courseObjectId } },
+    { new: true, useFindAndModify: false }
   );
   await NotificationModel.create({
     userId: isUserExits._id,
@@ -70,7 +81,9 @@ const createOrder = async <T>(playLoad: any) => {
     message: `You have a new order from ${isCourseExit.name}`,
   });
   if (isCourseExit) {
-  await CourseModel.findByIdAndUpdate(isCourseExit._id,{purchased:isCourseExit.purchased!+1})
+    await CourseModel.findByIdAndUpdate(isCourseExit._id, {
+      purchased: isCourseExit.purchased! + 1,
+    });
   }
   return updatedUserData;
 };
