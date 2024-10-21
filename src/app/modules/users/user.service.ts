@@ -8,10 +8,12 @@ require("dotenv").config();
 
 const registrationUser = async (playLoad: TUser) => {
   const result = await UserModel.create(playLoad);
-  await purchaseCourseModel.create({
+  const data = {
     userId: playLoad.email,
     courses: [],
-  });
+  };
+  // ! when user login for first time then it create empty data
+  await purchaseCourseModel.create(data);
   return result;
 };
 const loginUser = async (playLoad: { email: string; password: string }) => {
@@ -39,12 +41,7 @@ const loginUser = async (playLoad: { email: string; password: string }) => {
   const token = jwt.sign(jwtPlayLoad, process.env.ACCESS_TOKEN as string, {
     expiresIn: "7d",
   });
-  const data = {
-    userId: userExist._id,
-    courses: [],
-  };
-  // ! when user login for first time then it create empty data
-  await purchaseCourseModel.create(data);
+
   return token;
 };
 

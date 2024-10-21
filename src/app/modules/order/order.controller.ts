@@ -9,7 +9,7 @@ const stripe = require("stripe")(process.env.Secret_key);
 const createOrder = catchAsyncError(
   async (req: Request & { user: any }, res: Response, next: NextFunction) => {
     const { courseId, paymentInfo } = req.body;
-    console.log(courseId,paymentInfo)
+    // console.log(courseId,paymentInfo)
     try {
       const user = req.user._id;
       if (paymentInfo) {

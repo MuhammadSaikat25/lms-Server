@@ -69,12 +69,13 @@ const createOrder = async <T>(playLoad: any) => {
     { new: true }
   );
   const courseObjectId = new mongoose.Types.ObjectId(courseId);
-
+  console.log(isUserExits.email)
   const purchaseCourse = await purchaseCourseModel.findOneAndUpdate(
     { userId: isUserExits.email },
     { $push: { courses: courseObjectId } },
     { new: true, useFindAndModify: false }
   );
+  
   await NotificationModel.create({
     userId: isUserExits._id,
     title: "New Order",
